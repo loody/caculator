@@ -1,0 +1,240 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>海外仓成本利率计算器</title>
+
+    <script type="text/javascript">
+
+    function toDecimal2(x) {
+    var f = parseFloat(x);
+    if (isNaN(f)) {
+     return false;
+    }
+    var f = Math.round(x*100)/100;
+    var s = f.toString();
+    var rs = s.indexOf('.');
+    if (rs < 0) {
+     rs = s.length;
+     s += '.';
+                }
+    while (s.length <= rs + 2) {
+     s += '0';
+    }
+    return s;
+    }
+
+      //   $(function(){
+      //   if("\v"=="v"){//true为IE浏览器，感兴趣的同学可以去搜下，据说是现有最流行的判断浏览器的方法
+      //   document.getElementById("price_caigou").attachEvent("onporpertychange",function(e){
+      //       var price_caigou=document.getElementById("price_caigou").value;
+      //       var price_caigou_dollar=price_caigou/6.5;
+      //       document.getElementById("price_caigou_dollar").innerText=toDecimal2(price_caigou_dollar);
+      //   }）);
+      // }else{
+      //   document.getElementById("price_caigou").addEventListener("onporpertychange",function(e){
+      //     var price_caigou=document.getElementById("price_caigou").value;
+      //     var price_caigou_dollar=price_caigou/6.5;
+      //     document.getElementById("price_caigou_dollar").innerText=toDecimal2(price_caigou_dollar);
+      //   })
+      // }}
+
+        function sum(){
+
+          var price_caigou=document.getElementById("price_caigou").value;//采购价
+
+          var price_suggest=document.getElementById("price_suggest").value;//建议零售价
+
+          var price_report=document.getElementById("price_report").value;//建议零售价
+
+          var tariff=price_report*0.05;
+
+          var price_caigou_dollar=price_caigou/6.5;//采购美金价
+
+          var price_paypal=0;//平台Paypal费
+
+          if (price_suggest<=8) {
+             price_paypal=price_suggest*0.155+0.05;
+          }else{
+             price_paypal=price_suggest*0.127+0.3;
+          }
+          document.getElementById("price_paypal").innerText=toDecimal2(price_paypal);
+          document.getElementById("price_caigou_dollar").innerText=toDecimal2(price_caigou_dollar);
+          document.getElementById("tariff").innerText=toDecimal2(tariff);
+
+          var price_long=document.getElementById("price_long").value;
+          var price_width=document.getElementById("price_width").value;
+          var price_height=document.getElementById("price_height").value;
+          var price_weight=document.getElementById("price_weight").value;
+
+          var price_in=0;//入库处理费
+
+          if (price_weight>0&&price_weight<=500) {
+              price_in=0.18;
+          }else if (price_weight>500&&price_weight<=1000) {
+            price_in=0.25;
+          }else if (price_weight>1000&&price_weight<=2000) {
+              price_in=0.51;
+          }else if (price_weight>2000&&price_weight<=10000) {
+              price_in=0.65;
+          }else {
+            //续重1.09/公斤
+          }
+          document.getElementById("price_in").innerText=price_in;
+
+          var price_out=0;//出库处理费
+
+          if (price_weight>0&&price_weight<=500) {
+              price_out=0.05;
+          }else if (price_weight>500&&price_weight<=1000) {
+              price_out=0.06;
+          }else if (price_weight>1000&&price_weight<=2000) {
+              price_out=0.09;
+          }else if (price_weight>2000&&price_weight<=10000) {
+              price_out=0.11;
+          }else {
+            //续重0.10/公斤
+          }
+          document.getElementById("price_out").innerText=price_out;
+
+          var shipments=document.getElementById('shipments');
+          var shipments_index=shipments.selectedIndex ;
+          var currshipments = shipments.options[shipments_index].value;
+
+          var weicheng_shipment=0;//尾程运费
+
+          if (currshipments=="1") {
+            if (price_weight>0&&price_weight<=453) {
+                weicheng_shipment=7.67;
+            }else if (price_weight>453&&price_weight<=907) {
+                weicheng_shipment=8.40;
+            }else if (price_weight>907&&price_weight<=1360) {
+                weicheng_shipment=9.16;
+            }else if (price_weight>1360&&price_weight<=1814) {
+                weicheng_shipment=9.77;
+            }else if (price_weight>1184&&price_weight<=2268) {
+                weicheng_shipment=9.79;
+            }else if (price_weight>2268&&price_weight<=2721) {
+                shipment=9.99;
+            }else if (price_weight>2721&&price_weight<=3175) {
+                weicheng_shipment=10.25;
+            }else if (price_weight>3175&&price_weight<=3628) {
+                weicheng_shipment=10.53;
+            }else if (price_weight>3628&&price_weight<=4082) {
+                weicheng_shipment=10.75;
+            }
+          }else if (currshipments=="2") {
+            if (price_weight>0&&price_weight<=85) {
+                weicheng_shipment=3.51;
+            }else if (price_weight>85&&price_weight<=113) {
+                weicheng_shipment=3.53;
+            }else if (price_weight>113&&price_weight<=141) {
+                weicheng_shipment=4.06;
+            }else if (price_weight>141&&price_weight<=170) {
+                weicheng_shipment=4.13;
+            }else if (price_weight>170&&price_weight<=198) {
+                weicheng_shipment=4.14;
+            }else if (price_weight>198&&price_weight<=226) {
+                weicheng_shipment=4.20;
+            }else if (price_weight>226&&price_weight<=255) {
+                weicheng_shipment=5.03;
+            }else if (price_weight>255&&price_weight<=283) {
+                weicheng_shipment=5.21;
+            }else if (price_weight>283&&price_weight<=311) {
+                weicheng_shipment=5.40;
+            }else if (price_weight>311&&price_weight<=340) {
+                weicheng_shipment=5.58;
+            }else if (price_weight>340&&price_weight<=368) {
+                weicheng_shipment=5.75;
+            }else if (price_weight>368&&price_weight<=396) {
+                weicheng_shipment=6.53;
+            }else if (price_weight>396&&price_weight<=425) {
+                weicheng_shipment=6.76;
+            }else if (price_weight>425&&price_weight<=453) {
+                weicheng_shipment=6.98;
+            }
+          }
+          document.getElementById("weicheng_shipment").innerText=weicheng_shipment;
+
+            var trans=document.getElementById('trans');
+            var index=trans.selectedIndex ;
+            var selectTrans = trans.options[index].value
+            var price_toucheng=0;//头程运费
+
+              if (selectTrans=="1") {
+                //海运
+                price_toucheng=((price_long*price_width*price_height)/1000000)*126;
+              }else if (selectTrans=="2") {
+                //空运
+                var tiji_weight=(price_long*price_width*price_height)/6;
+                if (price_weight<tiji_weight) {
+                  price_weight=tiji_weight;
+                }
+                price_toucheng=price_weight*0.00472;
+              }
+              document.getElementById("toucheng_shipment").innerText=toDecimal2(price_toucheng);
+
+              var all_cost=price_caigou_dollar+price_paypal+price_toucheng+weicheng_shipment+price_in+price_out+tariff;
+
+              document.getElementById("all_cost").innerText=toDecimal2(all_cost);
+
+              var gross=(price_suggest-all_cost)/price_suggest;
+
+              document.getElementById("gross").innerText=toDecimal2(gross);
+        }
+
+
+    </script>
+</head>
+
+<body>
+采购价： <input type="number" id="price_caigou"/>元
+建议零售价： <input type="number"  id="price_suggest"/>$ </p>
+申报价值： <input type="number"  id="price_report"/>$ </p>
+长：<input type="number" width="50" id="price_long"/> cm
+宽：<input type="number" width="50" id="price_width"/> cm
+高：<input type="number" width="50" id="price_height"/> cm</p>
+重量：<input type="number" width="50" id="price_weight"/> g</p>
+
+
+运输方式：
+<select id="trans">
+    <option value="1">海运</option>
+    <option value="2">空运</option>
+</select>
+</p>
+
+尾程物流：
+<select id="shipments">
+    <option value="1">UPS SurePost Service</option>
+    <option value="2">USPS First Class Mail Tracked Service</option>
+</select>
+</p>
+
+采购美金价：<span id="price_caigou_dollar"></span>$</p>
+
+平台Paypal费：<span id="price_paypal"> </span>$</p>
+
+入库处理费：<span id="price_in"></span>$</p>
+
+出库处理费：<span id="price_out"></span>$</p>
+
+头程运费： <span id="toucheng_shipment"> </span>$</p>
+
+尾程运费： <span id="weicheng_shipment"> </span>$</p>
+
+关税： <span id="tariff"> </span>$</p>
+
+所有成本： <span id="all_cost"> </span>$</p>
+
+毛利率： <span id="gross"> </span></p>
+
+
+
+<button onclick="sum()">计算</button>
+
+</body>
+
+
+</html>
